@@ -7,9 +7,10 @@
  *
  */
 
-#include <iostream>
+#include "DBow3/QueryResults.h"
+
 #include <fstream>
-#include "QueryResults.h"
+#include <iostream>
 
 using namespace std;
 

@@ -7,10 +7,11 @@
  *
  */
 
-#include "FeatureVector.h"
+#include "DBow3/FeatureVector.h"
+
+#include <iostream>
 #include <map>
 #include <vector>
-#include <iostream>
 
 namespace DBoW3 {
 

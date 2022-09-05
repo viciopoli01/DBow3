@@ -1,8 +1,10 @@
-#include "Vocabulary.h"
-#include "DescManip.h"
-#include "quicklz.h"
+#include "DBow3/Vocabulary.h"
+
 #include <sstream>
-#include "timers.h"
+
+#include "DBow3/DescManip.h"
+#include "DBow3/quicklz.h"
+#include "DBow3/timers.h"
 namespace DBoW3{
 // --------------------------------------------------------------------------
 
@@ -1177,7 +1179,7 @@ void Vocabulary::save(cv::FileStorage &f,
 
 }
 
-void Vocabulary::toStream(  std::ostream &out_str, bool compressed) const throw(std::exception){
+void Vocabulary::toStream(  std::ostream &out_str, bool compressed) const throw(){
 
     uint64_t sig=88877711233;//magic number describing the file
     out_str.write((char*)&sig,sizeof(sig));
@@ -1257,7 +1259,7 @@ void Vocabulary::toStream(  std::ostream &out_str, bool compressed) const throw(
 }
 
 
-void Vocabulary:: load_fromtxt(const std::string &filename)throw(std::runtime_error){
+void Vocabulary:: load_fromtxt(const std::string &filename)throw(){
 
     std::ifstream ifile(filename);
     if(!ifile)throw std::runtime_error("Vocabulary:: load_fromtxt  Could not open file for reading:"+filename);
@@ -1268,9 +1270,9 @@ void Vocabulary:: load_fromtxt(const std::string &filename)throw(std::runtime_er
     std::stringstream ss(str);
     ss>>m_k>>m_L>>n1>>n2;
     }
-    if(m_k<0 || m_k>20 || m_L<1 || m_L>10 || n1<0 || n1>5 || n2<0 || n2>3)
-         throw std::runtime_error( "Vocabulary loading failure: This is not a correct text file!" );
-
+    if(m_k<0 || m_k>20 || m_L<1 || m_L>10 || n1<0 || n1>5 || n2<0 || n2>3) {
+        throw std::runtime_error("Vocabulary loading failure: This is not a correct text file!");
+    }
     m_scoring = (ScoringType)n1;
     m_weighting = (WeightingType)n2;
     createScoringObject();
@@ -1332,7 +1334,7 @@ void Vocabulary:: load_fromtxt(const std::string &filename)throw(std::runtime_er
            }
        }
 }
-void Vocabulary::fromStream(  std::istream &str )   throw(std::exception){
+void Vocabulary::fromStream(  std::istream &str ) throw(){
 
 
     m_words.clear();

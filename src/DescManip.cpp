@@ -6,15 +6,16 @@
  * License: see the LICENSE.txt file
  *
  */
- 
-#include <vector>
-#include <string>
-#include <sstream>
-#include <iostream>
-#include <stdint.h>
-#include <limits.h>
 
-#include "DescManip.h"
+#include "DBow3/DescManip.h"
+
+#include <limits.h>
+#include <stdint.h>
+
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
 
 using namespace std;
 

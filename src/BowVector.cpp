@@ -7,13 +7,13 @@
  *
  */
 
-#include <iostream>
-#include <fstream>
-#include <vector>
+#include "DBow3/BowVector.h"
+
 #include <algorithm>
 #include <cmath>
-
-#include "BowVector.h"
+#include <fstream>
+#include <iostream>
+#include <vector>
 
 namespace DBoW3 {
 
