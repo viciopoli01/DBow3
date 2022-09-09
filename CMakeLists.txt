@@ -41,8 +41,18 @@ include_directories(include)
 
 target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBRARIES})
 
-configure_package_config_file(config.cmake.in
-        ${CMAKE_CURRENT_BINARY_DIR}/config.cmake
+# Generate pkg-config file
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.pc.in ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc @ONLY)
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+
+install(DIRECTORY include/
+        DESTINATION include
+        COMPONENT main)
+
+configure_package_config_file(${PROJECT_NAME}Config.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}config.cmake
         INSTALL_DESTINATION ${CMAKE_EXPORT_DESTINATION}
         )
 
@@ -54,10 +64,6 @@ install(TARGETS ${PROJECT_NAME}
 
 
 install(EXPORT ${PROJECT_NAME}Exports DESTINATION ${CMAKE_EXPORT_DESTINATION})
-
-install(DIRECTORY include/
-        DESTINATION include
-        COMPONENT main)
 
 write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
         VERSION ${PROJECT_VERSION}
@@ -78,7 +84,7 @@ set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
 set(CPACK_PACKAGE_RELEASE ${VERSION})
 set(CPACK_PACKAGE_CONTACT "polivicio@gmail.com")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Vincenzo Polizzi polivicio@gmail.com")
-set(CPACK_PACKAGE_VENDOR "JPL-California Institute of Technology")
+set(CPACK_PACKAGE_VENDOR "")
 set(CPACK_PACKAGE_DESCRIPTION "DBow3 for x library, build with c++17")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY ${CPACK_PACKAGE_DESCRIPTION})
 set(CPACK_PACKAGING_INSTALL_PREFIX /opt/DBow3x/)
