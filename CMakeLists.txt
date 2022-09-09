@@ -30,34 +30,10 @@ else ()
 endif ()
 
 include(CMakePackageConfigHelpers)
+set(CMAKE_INSTALL_PREFIX /opt/DBow3x)
+set(CMAKE_INSTALL_LIBDIR lib)
 
-
-SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/cmake/ /usr/${LIB_INSTALL_DIR}/cmake )
-
-# ----------------------------------------------------------------------------
-#   Uninstall target, for "make uninstall"
-# ----------------------------------------------------------------------------
-CONFIGURE_FILE( "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in" "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake" IMMEDIATE @ONLY)
-ADD_CUSTOM_TARGET(uninstall "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
-
-# ----------------------------------------------------------------------------
-# create configuration file from .in file (If you use windows take care with paths)
-# ----------------------------------------------------------------------------
-
-write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-        VERSION ${PROJECT_VERSION}
-        COMPATIBILITY SameMajorVersion
-        )
-
-CONFIGURE_FILE("${PROJECT_SOURCE_DIR}/config.cmake.in" "${PROJECT_BINARY_DIR}/Find${PROJECT_NAME}.cmake")
-CONFIGURE_FILE("${PROJECT_SOURCE_DIR}/config.cmake.in" "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake")
-INSTALL(FILES "${PROJECT_BINARY_DIR}/Find${PROJECT_NAME}.cmake" DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake/ )
-install(FILES
-        ${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-        ${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake/${PROJECT_NAME}
-        COMPONENT ${PROJECT_NAME}
-        )
+set(CMAKE_EXPORT_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
 
 add_library(DBow3x ${SOURCE})
 
@@ -65,14 +41,57 @@ include_directories(include)
 
 target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBRARIES})
 
-install(DIRECTORY include/
-        DESTINATION include
-        COMPONENT main)
+configure_package_config_file(config.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/config.cmake
+        INSTALL_DESTINATION ${CMAKE_EXPORT_DESTINATION}
+        )
 
 install(TARGETS ${PROJECT_NAME}
+        EXPORT ${PROJECT_NAME}Exports
         RUNTIME DESTINATION bin COMPONENT main			# Install the dll file in bin directory
         LIBRARY DESTINATION ${LIB_INSTALL_DIR} PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE COMPONENT main
         ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT main)			# Install the dll.a file in lib directory
 
+
+install(EXPORT ${PROJECT_NAME}Exports DESTINATION ${CMAKE_EXPORT_DESTINATION})
+
+install(DIRECTORY include/
+        DESTINATION include
+        COMPONENT main)
+
+write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+        VERSION ${PROJECT_VERSION}
+        COMPATIBILITY SameMajorVersion
+        )
+
+install(FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+        DESTINATION ${CMAKE_EXPORT_DESTINATION}
+        COMPONENT ${PROJECT_NAME}
+        )
+
+# Support automatic RPM/DEB generation via CPack
+set(CPACK_CMAKE_GENERATOR ${CMAKE_GENERATOR})
+set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
+set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+set(CPACK_PACKAGE_RELEASE ${VERSION})
+set(CPACK_PACKAGE_CONTACT "polivicio@gmail.com")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Vincenzo Polizzi polivicio@gmail.com")
+set(CPACK_PACKAGE_VENDOR "JPL-California Institute of Technology")
+set(CPACK_PACKAGE_DESCRIPTION "DBow3 for x library, build with c++17")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY ${CPACK_PACKAGE_DESCRIPTION})
+set(CPACK_PACKAGING_INSTALL_PREFIX /opt/DBow3x/)
+# set(CPACK_DEBIAN_PACKAGE_DEPENDS "")
+set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}.${CMAKE_SYSTEM_PROCESSOR}")
+set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
+set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
+set(CPACK_COMPONENTS_GROUPING ALL_COMPONENTS_IN_ONE)
+set(CPACK_DEB_COMPONENT_INSTALL YES)
+set(CPACK_GENERATOR "DEB")
+set(CPACK_RPM_PACKAGE_AUTOREQ 1)
+set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS 1)
+
+include(CPack)
 
 
