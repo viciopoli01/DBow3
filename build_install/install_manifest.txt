@@ -1,0 +1,15 @@
+/home/viciopoli/InstalledLibs/DBow3x/cmake/FindDBow3x.cmake
+/home/viciopoli/InstalledLibs/DBow3x/cmake/DBow3x/DBow3xConfig.cmake
+/home/viciopoli/InstalledLibs/DBow3x/cmake/DBow3x/DBow3xConfigVersion.cmake
+/home/viciopoli/InstalledLibs/DBow3x/include/DBow3/QueryResults.h
+/home/viciopoli/InstalledLibs/DBow3x/include/DBow3/DescManip.h
+/home/viciopoli/InstalledLibs/DBow3x/include/DBow3/exports.h
+/home/viciopoli/InstalledLibs/DBow3x/include/DBow3/BowVector.h
+/home/viciopoli/InstalledLibs/DBow3x/include/DBow3/ScoringObject.h
+/home/viciopoli/InstalledLibs/DBow3x/include/DBow3/timers.h
+/home/viciopoli/InstalledLibs/DBow3x/include/DBow3/quicklz.h
+/home/viciopoli/InstalledLibs/DBow3x/include/DBow3/DBoW3.h
+/home/viciopoli/InstalledLibs/DBow3x/include/DBow3/Database.h
+/home/viciopoli/InstalledLibs/DBow3x/include/DBow3/FeatureVector.h
+/home/viciopoli/InstalledLibs/DBow3x/include/DBow3/Vocabulary.h
+/home/viciopoli/InstalledLibs/DBow3x/lib/libDBow3x.a
